@@ -15,14 +15,7 @@ import OpenHowNet	#初始化，下载义原数据
 hownet_dict = OpenHowNet.HowNetDict()
 hownet_dict.initialize_sememe_similarity_calculation()    #初始化基于义原的词语相似度计算（需要读取相关文件并有短暂延迟）
 
-#f=open("/home/hxy/task1-OpenHowNet/result.txt",'a')
 f=open("/home/hxy/task1-OpenHowNet/filetest_0.75.txt",'a')
-"""
-f2=open("/home/hxy/task1-OpenHowNet/filetest_0.75.txt",'a')
-f3=open("/home/hxy/task1-OpenHowNet/filetest_0.80.txt",'a')
-f4=open("/home/hxy/task1-OpenHowNet/filetest_0.85.txt",'a')
-f5=open("/home/hxy/task1-OpenHowNet/filetest_0.90.txt",'a')
-"""
 
 """
 任务一：获得HowNet中所有词语对应概念的标注信息，将其核心描述词作为上位词
@@ -58,34 +51,31 @@ for word in zh_word_list:
 	else:
 		continue
 
-pairs_of_sememe=[]
-for sememe in sememe_set:
-	sememe_hyper_dict=hoenet_dict.get_via_relation(sememe,"hypernym",lang="zh")
-	while len(sememe_hyper_dict)>0:
-		
+pairs_of_sememe=[]		
 #补充记录 义原核心词的上位词
 for sememe in sememe_set:
 	sememe_hyper_dict=hownet_dict.get_sememe_via_relation(sememe,"hypernym",lang="zh")
 	for sememe_hyper in sememe_hyper_dict:
 		if [sememe, sememe_hyper] not in pairs_of_sememe:
 			pairs_of_sememe.append([sememe,sememe_hyper])
-		
+
+all_sememes=hownet_dict.get_all_sememes()		#检索义原之间的存在的上下位关系
+for sememe in all_sememes:
+	result_list = hownet_dict.get(sememe, language="zh")
+	for i in range(len(result_list)):
+		#只抽取名词
+		if(result_list[i]["ch_grammar"] != "noun"):
+			break
+		hyper_dict=set(hownet_dict.get_sememe_via_relation(sememe,"hypernym"))
+		for sememe_hyper in hyper_dict:
+			pair=[sememe,sememe_hyper]
+			if pair not in pairs:
+				pairs.append(pair)
+
 			
 for pair in pairs:
 	f.write(pair[0]+'\t'+pair[1]+'\n')
 for pair in pairs_of_sememe:
 	f.write(pair[0]+'\t'+pair[1]+'\n')
 
-"""
-all_sememes=hownet_dict.get_all_sememes()		#检索义原之间的存在的上下位关系
-for sememe in all_sememes:
-	result_list = hownet_dict.get(sememe, language="zh")
-	for i in range(len(result_list)):
-		#只抽取名词的上下位关系
-		if(result_list[i]["ch_grammar"] != "noun"):
-			break
-		hyper_dict=set(hownet_dict.get_sememe_via_relation(sememe,"hypernym"))
-		for sememe_hyper in hyper_dict:
-			f.write(sememe+'\t'+sememe_hyper+'\n')	
-"""
 f.close()
