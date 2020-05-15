@@ -15,7 +15,7 @@ import OpenHowNet	#初始化，下载义原数据
 hownet_dict = OpenHowNet.HowNetDict()
 hownet_dict.initialize_sememe_similarity_calculation()    #初始化基于义原的词语相似度计算（需要读取相关文件并有短暂延迟）
 
-f=open("/home/hxy/task1-OpenHowNet/result.txt",'a')
+f=open("./task1-OpenHowNet/result.txt",'a')
 
 """
 任务一：获得HowNet中所有词语对应概念的标注信息，将其核心描述词作为上位词
