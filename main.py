@@ -25,7 +25,6 @@ f=open("./task1-OpenHowNet/result.txt",'a')
 pairs=[]
 #获得HowNet中所有词语
 zh_word_list=hownet_dict.get_zh_words()
-#zh_word_list=['潜泳','篮球','红楼梦','曹雪芹','苹果','鸭梨','笔记本电脑','方向盘','发动机','医药','安乐椅','安心丸','巴松管','把柄','白菜','白米','白衣战士','拜物教','绊脚石','替罪羊','苞谷','薄荷','宝典','宝物','核桃','宏观经济','红包','华尔兹','黄昏恋','回忆录']
 for word in zh_word_list:
 	try:
 		#获取HowNet中的词语对应概念的标注
@@ -35,7 +34,7 @@ for word in zh_word_list:
 			if(result_list[i]["ch_grammar"] != "noun"):
 				break
 			
-			#获得词语的义原集合,展开2层义原树
+			#获得词语的义原集合,展开3层义原树
 			sememes_dict=hownet_dict.get_sememes_by_word(word,structured=False,lang="zh",merge=True,expanded_layer=3)	
 		
 			for sememe in sememes_dict:
